@@ -62,10 +62,10 @@ public class ResourceLoader {
      * @throws IOException If at any point processing of the resource file fails.
      * @throws URISyntaxException If cannot find the resource file.
      */
-    public File copyToTempDirectory(String relativePath, Class outsideClass) throws IOException, URISyntaxException {
+    public File copyToTempDirectory(String relativePath, Class outsideClass, File mainTempDir) throws IOException, URISyntaxException {
         // Create a "main" temporary directory in which
         // everything can be thrown in.
-        File mainTempDir = createMainTempDirectory();
+
 
         // Create the required directories.
         mainTempDir.mkdirs();

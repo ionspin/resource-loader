@@ -13,7 +13,10 @@ import com.sun.jna.Native;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
@@ -50,13 +53,18 @@ public class SharedLibraryLoader extends ResourceLoader {
     public File load(String relativePath, List<Class> classes) {
         synchronized (lock) {
             try {
-                File library = copyToTempDirectory(relativePath, classes.get(0));
+                File mainTempDir = createMainTempDirectory();
+                File library = copyToTempDirectory(relativePath, classes.get(0), mainTempDir);
                 setPermissions(library);
                 if (library.isDirectory()) {
                     throw new IOException("Please supply a relative path to a file and not a directory.");
                 }
                 registerLibraryWithClasses(library.getAbsolutePath(), classes);
                 requestDeletion(library);
+                Files.walk(mainTempDir.toPath())
+                        .sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .forEach(File::delete);
                 return library;
             } catch (IOException e) {
                 String message = String.format(

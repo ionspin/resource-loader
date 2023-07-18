@@ -12,15 +12,13 @@ plugins {
     id 'idea'
     id 'com.github.johnrengelman.shadow' version '5.1.0'
     id 'signing'
-    id 'maven'
     id 'maven-publish'
-    id 'biz.aQute.bnd.builder'
 }
 
 ext {
     artifactId = "resource-loader"
     groupId = "com.goterl"
-    version = '2.0.2'
+    version = '2.0.3-SNAPSHOT'
     description = "Resource Loader gives you the functions to load resource files inside or outside JARs."
 }
 
@@ -120,10 +118,10 @@ String getSigningPassword() {
     return ext.signingPassword
 }
 
-signing {
-    useGpgCmd()
-    sign publishing.publications
-}
+//signing {
+//    useGpgCmd()
+//    sign publishing.publications
+//}
 
 task sourcesJar(type: Jar, dependsOn: classes) {
     archiveClassifier.set("sources")

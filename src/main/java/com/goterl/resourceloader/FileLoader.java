@@ -59,7 +59,8 @@ public class FileLoader extends ResourceLoader {
 
     private File loadFromRelativePath(String relativePath, Set<PosixFilePermission> filePermissions, Class outsideClass)
             throws IOException, URISyntaxException {
-        File file = copyToTempDirectory(relativePath, outsideClass);
+        File mainTempDir = createMainTempDirectory();
+        File file = copyToTempDirectory(relativePath, outsideClass, mainTempDir);
         setPermissions(file, filePermissions);
         return file;
     }
